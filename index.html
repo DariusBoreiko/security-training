@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cybersecurity Awareness Training</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ── Reset & base ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:   #0B1929;
+    --navy2:  #112035;
+    --navy3:  #172C47;
+    --teal:   #00C9A7;
+    --teal2:  #00A88C;
+    --amber:  #F5A623;
+    --red:    #E8524A;
+    --green:  #27C47A;
+    --text:   #E8EDF3;
+    --text2:  #8CA0B8;
+    --text3:  #5A7494;
+    --border: rgba(255,255,255,0.07);
+    --border2:rgba(255,255,255,0.13);
+    --radius: 10px;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--navy);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* ── Layout ── */
+  .page { max-width: 700px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+
+  /* ── Screen system ── */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* ── Header bar ── */
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--navy);
+    position: sticky; top: 0; z-index: 10;
+  }
+  .topbar-brand {
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--mono); font-size: 13px; font-weight: 500;
+    color: var(--teal); letter-spacing: 0.04em;
+  }
+  .topbar-brand svg { flex-shrink: 0; }
+  .topbar-meta { font-size: 12px; color: var(--text3); }
+
+  /* ── Intro screen ── */
+  .intro-hero {
+    padding: 3rem 0 2rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2rem;
+  }
+  .intro-eyebrow {
+    font-family: var(--mono); font-size: 11px; font-weight: 500;
+    color: var(--teal); letter-spacing: 0.12em; text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .intro-h1 {
+    font-size: clamp(26px, 5vw, 36px); font-weight: 600;
+    line-height: 1.2; color: var(--text);
+    margin-bottom: 1rem;
+  }
+  .intro-h1 em { font-style: normal; color: var(--teal); }
+  .intro-desc {
+    font-size: 15px; color: var(--text2); line-height: 1.75;
+    max-width: 560px; margin-bottom: 2rem;
+  }
+  .intro-stats {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: var(--border2); border: 1px solid var(--border2);
+    border-radius: var(--radius); overflow: hidden; margin-bottom: 2.5rem;
+  }
+  .stat-cell {
+    background: var(--navy2); padding: 1.1rem 1rem; text-align: center;
+  }
+  .stat-val { font-size: 22px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+  .stat-lbl { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; font-family: var(--mono); }
+
+  /* Topics grid */
+  .topics-label { font-size: 12px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; font-family: var(--mono); margin-bottom: 0.75rem; }
+  .topics { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 2.5rem; }
+  .topic-chip {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--navy3); border: 1px solid var(--border2);
+    border-radius: 100px; padding: 5px 13px;
+    font-size: 12px; color: var(--text2);
+  }
+  .topic-chip svg { opacity: 0.6; flex-shrink: 0; }
+
+  /* Name form */
+  .name-form { margin-bottom: 2rem; }
+  .name-form label {
+    display: block; font-size: 13px; color: var(--text2);
+    font-family: var(--mono); letter-spacing: 0.04em; margin-bottom: 8px;
+  }
+  .name-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .name-input {
+    flex: 1; min-width: 220px;
+    background: var(--navy3); border: 1px solid var(--border2);
+    color: var(--text); border-radius: var(--radius);
+    padding: 0.65rem 1rem; font-size: 14px; font-family: 'Inter', sans-serif;
+    outline: none; transition: border-color 0.15s;
+  }
+  .name-input:focus { border-color: var(--teal); }
+  .name-input::placeholder { color: var(--text3); }
+
+  /* Buttons */
+  .btn-primary {
+    background: var(--teal); color: var(--navy);
+    border: none; border-radius: var(--radius);
+    padding: 0.65rem 1.5rem; font-size: 14px; font-weight: 600;
+    cursor: pointer; font-family: 'Inter', sans-serif;
+    transition: background 0.15s, transform 0.1s;
+    white-space: nowrap;
+  }
+  .btn-primary:hover { background: var(--teal2); }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-primary:disabled { opacity: 0.35; cursor: default; }
+
+  .btn-ghost {
+    background: transparent; color: var(--text2);
+    border: 1px solid var(--border2); border-radius: var(--radius);
+    padding: 0.65rem 1.5rem; font-size: 14px;
+    cursor: pointer; font-family: 'Inter', sans-serif;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .btn-ghost:hover { border-color: var(--text2); color: var(--text); }
+
+  /* ── Quiz screen ── */
+  .quiz-header { padding: 1.5rem 0 1.25rem; }
+  .section-label {
+    font-family: var(--mono); font-size: 11px; color: var(--teal);
+    text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.6rem;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .progress-track {
+    height: 3px; background: var(--navy3);
+    border-radius: 100px; margin-bottom: 6px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; background: var(--teal);
+    border-radius: 100px; transition: width 0.4s ease;
+  }
+  .progress-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--text3); font-family: var(--mono); }
+
+  /* Question card */
+  .q-card {
+    background: var(--navy2); border: 1px solid var(--border2);
+    border-radius: 14px; padding: 1.5rem; margin: 1.25rem 0;
+  }
+  .scenario {
+    border-left: 3px solid var(--teal);
+    background: rgba(0,201,167,0.06);
+    border-radius: 0 8px 8px 0;
+    padding: 0.85rem 1rem; margin-bottom: 1.25rem;
+    font-size: 13px; color: var(--text2); line-height: 1.7;
+    font-style: italic;
+  }
+  .scenario strong { font-style: normal; color: var(--text); font-size: 10px; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.1em; display: block; margin-bottom: 5px; color: var(--teal); }
+  .q-text { font-size: 16px; font-weight: 500; line-height: 1.55; color: var(--text); margin-bottom: 1.25rem; }
+  .options { display: flex; flex-direction: column; gap: 8px; }
+  .opt-btn {
+    background: var(--navy3); border: 1px solid var(--border2);
+    border-radius: var(--radius); padding: 0.8rem 1rem;
+    font-size: 14px; color: var(--text2);
+    cursor: pointer; text-align: left; transition: border-color 0.15s, color 0.15s, background 0.15s;
+    font-family: 'Inter', sans-serif; line-height: 1.45;
+    display: flex; align-items: flex-start; gap: 10px;
+  }
+  .opt-btn:hover:not(:disabled) { border-color: var(--teal); color: var(--text); background: rgba(0,201,167,0.05); }
+  .opt-label { font-family: var(--mono); font-size: 11px; color: var(--text3); margin-top: 2px; flex-shrink: 0; }
+  .opt-btn.correct { background: rgba(39,196,122,0.1); border-color: var(--green); color: var(--green); }
+  .opt-btn.correct .opt-label { color: var(--green); }
+  .opt-btn.wrong { background: rgba(232,82,74,0.1); border-color: var(--red); color: var(--red); }
+  .opt-btn.wrong .opt-label { color: var(--red); }
+  .opt-btn.reveal { background: rgba(39,196,122,0.05); border-color: rgba(39,196,122,0.35); color: rgba(39,196,122,0.6); }
+
+  .feedback {
+    margin-top: 1rem; padding: 0.8rem 1rem;
+    border-radius: var(--radius); font-size: 13px; line-height: 1.65;
+    display: none;
+  }
+  .feedback.correct { background: rgba(39,196,122,0.08); border: 1px solid rgba(39,196,122,0.25); color: #6ee8a8; }
+  .feedback.wrong { background: rgba(232,82,74,0.08); border: 1px solid rgba(232,82,74,0.25); color: #f09590; }
+
+  .nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem; }
+  .q-counter { font-family: var(--mono); font-size: 12px; color: var(--text3); }
+
+  /* ── Results screen ── */
+  .results-top { padding: 2.5rem 0 2rem; text-align: center; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+  .score-circle {
+    width: 120px; height: 120px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; flex-direction: column;
+    margin: 0 auto 1.25rem;
+    border: 3px solid var(--teal);
+  }
+  .score-circle.fail { border-color: var(--red); }
+  .score-num { font-size: 34px; font-weight: 600; line-height: 1; }
+  .score-pct-lbl { font-size: 11px; color: var(--text3); font-family: var(--mono); }
+  .result-name { font-size: 13px; color: var(--text3); margin-bottom: 0.4rem; font-family: var(--mono); }
+  .result-headline { font-size: 20px; font-weight: 600; margin-bottom: 0.5rem; }
+  .result-headline.pass { color: var(--green); }
+  .result-headline.fail { color: var(--red); }
+  .result-sub { font-size: 14px; color: var(--text2); }
+
+  .cert-banner {
+    background: rgba(39,196,122,0.07);
+    border: 1px solid rgba(39,196,122,0.2);
+    border-radius: 12px; padding: 1.1rem 1.25rem;
+    text-align: center; margin-bottom: 1.5rem;
+  }
+  .cert-banner strong { display: block; color: var(--green); font-size: 14px; margin-bottom: 3px; }
+  .cert-banner span { font-size: 12px; color: rgba(39,196,122,0.6); font-family: var(--mono); }
+
+  .retry-banner {
+    background: rgba(232,82,74,0.07);
+    border: 1px solid rgba(232,82,74,0.2);
+    border-radius: 12px; padding: 1.1rem 1.25rem;
+    text-align: center; margin-bottom: 1.5rem;
+  }
+  .retry-banner strong { display: block; color: var(--red); font-size: 14px; margin-bottom: 3px; }
+  .retry-banner span { font-size: 12px; color: rgba(232,82,74,0.6); }
+
+  .breakdown-title { font-size: 11px; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--text3); margin-bottom: 0.75rem; }
+  .breakdown { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.75rem; }
+  .bd-row {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--navy2); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 0.65rem 1rem;
+  }
+  .bd-name { font-size: 13px; color: var(--text2); display: flex; align-items: center; gap: 8px; }
+  .bd-score { font-size: 13px; font-family: var(--mono); font-weight: 500; }
+  .bd-score.full { color: var(--green); }
+  .bd-score.partial { color: var(--amber); }
+  .bd-score.none { color: var(--red); }
+
+  .bd-bar { flex: 1; height: 3px; background: var(--navy3); border-radius: 100px; margin: 0 12px; overflow: hidden; }
+  .bd-bar-fill { height: 100%; border-radius: 100px; transition: width 0.6s ease; }
+
+  .email-status { font-size: 12px; font-family: var(--mono); color: var(--text3); text-align: center; margin: 0.5rem 0 1.25rem; min-height: 18px; }
+  .email-status.sending { color: var(--amber); }
+  .email-status.sent { color: var(--green); }
+  .email-status.error { color: var(--red); }
+
+  .results-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+
+  /* ── Responsive ── */
+  @media (max-width: 500px) {
+    .intro-stats { grid-template-columns: repeat(3, 1fr); }
+    .name-row { flex-direction: column; }
+    .name-input { min-width: unset; }
+    .results-actions { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="topbar">
+  <div class="topbar-brand">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    SECURITY TRAINING
+  </div>
+  <div class="topbar-meta" id="topbar-meta">Annual compliance — 2025</div>
+</div>
+
+<!-- ══════════════ INTRO SCREEN ══════════════ -->
+<div class="screen active" id="screen-intro">
+  <div class="page">
+    <div class="intro-hero">
+      <div class="intro-eyebrow">Mandatory annual training</div>
+      <h1 class="intro-h1">Cybersecurity<br><em>Awareness</em> Training</h1>
+      <p class="intro-desc">Work through realistic scenarios covering the most critical threats facing investment firms. A score of 90% or higher is required to pass and log your completion.</p>
+      <div class="intro-stats">
+        <div class="stat-cell"><div class="stat-val">18</div><div class="stat-lbl">Questions</div></div>
+        <div class="stat-cell"><div class="stat-val">~15 min</div><div class="stat-lbl">Duration</div></div>
+        <div class="stat-cell"><div class="stat-val">90%</div><div class="stat-lbl">To pass</div></div>
+      </div>
+
+      <div class="topics-label">Topics covered</div>
+      <div class="topics">
+        <div class="topic-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Phishing &amp; email threats</div>
+        <div class="topic-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Social engineering</div>
+        <div class="topic-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Password &amp; access security</div>
+        <div class="topic-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>Insider threats</div>
+        <div class="topic-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>Data handling</div>
+        <div class="topic-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Incident response</div>
+      </div>
+
+      <div class="name-form">
+        <label for="employee-name">Your full name — required to log completion</label>
+        <div class="name-row">
+          <input class="name-input" type="text" id="employee-name" placeholder="e.g. Jane Smith" autocomplete="name" />
+          <button class="btn-primary" id="btn-start" onclick="startTraining()" disabled>Begin training →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ QUIZ SCREEN ══════════════ -->
+<div class="screen" id="screen-quiz">
+  <div class="page">
+    <div class="quiz-header">
+      <div class="section-label" id="q-section-icon">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span id="q-section-name">—</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+      <div class="progress-meta"><span id="prog-text">Question 1 of 18</span><span id="prog-pct">0%</span></div>
+    </div>
+
+    <div class="q-card">
+      <div class="scenario" id="q-scenario" style="display:none"><strong>Scenario</strong><span id="q-scenario-text"></span></div>
+      <div class="q-text" id="q-text">—</div>
+      <div class="options" id="q-options"></div>
+      <div class="feedback" id="q-feedback"></div>
+    </div>
+
+    <div class="nav-row">
+      <span class="q-counter" id="q-counter">1 / 18</span>
+      <button class="btn-primary" id="btn-next" onclick="nextQuestion()" disabled>Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ RESULTS SCREEN ══════════════ -->
+<div class="screen" id="screen-results">
+  <div class="page">
+    <div id="results-content"></div>
+  </div>
+</div>
+
+<!-- EmailJS SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<script>
+/* ── EmailJS config — fill these in when you create your account ── */
+const EMAILJS_PUBLIC_KEY  = "YOUR_PUBLIC_KEY";   // from EmailJS → Account
+const EMAILJS_SERVICE_ID  = "YOUR_SERVICE_ID";   // from EmailJS → Email Services
+const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";  // from EmailJS → Email Templates
+
+/* ── Questions ── */
+const QUESTIONS = [
+  {
+    section:"Phishing & email threats",
+    scenario:"You receive an email from 'IT-Security@meridian-finance.support' saying your VPN password expires in 2 hours. It urges you to click a link immediately to reset it or lose access.",
+    question:"What should you do first?",
+    options:["Click the link to reset your password before it expires","Forward the email to a colleague to get their opinion","Report the email to IT security without clicking any links","Reply to the sender asking if it's legitimate"],
+    correct:2,
+    feedback:"Urgency is a hallmark of phishing. The domain 'meridian-finance.support' is not your firm's domain. Report suspicious emails directly to IT security — never click links or reply to senders you cannot verify."
+  },
+  {
+    section:"Phishing & email threats",
+    scenario:null,
+    question:"Which is the strongest indicator that an email link may be malicious?",
+    options:["The email was sent outside of business hours","The visible link text says 'portal.firm.com' but the actual URL goes to a different domain","The email has your full name in the greeting","The email has no attachments"],
+    correct:1,
+    feedback:"Mismatched URLs — where visible text shows one address but the hyperlink points elsewhere — are a classic phishing technique. Always hover over links to check the actual destination before clicking."
+  },
+  {
+    section:"Phishing & email threats",
+    scenario:"A PDF arrives from a client's known email address. The email says 'Please review the attached deal terms.' The PDF asks you to enable macros to view it.",
+    question:"How should you handle this?",
+    options:["Enable macros since it came from a trusted client email","Contact the client by phone to verify before opening the attachment","Open the PDF and enable macros — that's standard for deal documents","Forward to your manager for them to open instead"],
+    correct:1,
+    feedback:"Client email accounts can be compromised. Legitimate deal documents never require enabling macros. Call the client on a known number to verify. Forwarding to your manager simply moves the risk."
+  },
+  {
+    section:"Social engineering",
+    scenario:"Someone calls saying they're from your prime broker's tech team. They know your name and firm name, and say there's a critical system issue. They ask for your login credentials to troubleshoot.",
+    question:"What's the correct response?",
+    options:["Provide the credentials since they know firm-specific details","Ask for their employee ID, then provide the credentials","Refuse, hang up, and call the prime broker's official support line to verify","Give a temporary password only"],
+    correct:2,
+    feedback:"Knowing your name and firm is not proof of identity — this information is often publicly available. No legitimate vendor or IT team will ever ask for credentials over the phone. Hang up and call back on the official number."
+  },
+  {
+    section:"Social engineering",
+    scenario:null,
+    question:"A colleague you don't know personally holds a secured door open for you with a smile. What should you do?",
+    options:["Follow them in — they clearly work here","Decline and badge in separately, or politely verify their identity","Take note of their appearance but go through","Call security only if you feel something is wrong"],
+    correct:1,
+    feedback:"Tailgating — following someone into a secured area without badging in — is one of the most common physical security breaches. Always badge in separately, regardless of how awkward it feels."
+  },
+  {
+    section:"Social engineering",
+    scenario:"You get a LinkedIn message from someone claiming to be a recruiter at a rival fund. They ask about your firm's current positions, risk limits, and IT systems as part of 'understanding your experience.'",
+    question:"What is the most likely risk here?",
+    options:["Breach of employment contract only","Competitive intelligence gathering or a precursor to a targeted attack","No real risk — LinkedIn is a professional network","Reputational risk from being seen job hunting"],
+    correct:1,
+    feedback:"Adversaries frequently use fake recruiter personas on professional networks to extract sensitive information. Details about systems, positions, or processes can be used to craft targeted attacks."
+  },
+  {
+    section:"Password & access security",
+    scenario:null,
+    question:"Which is the most secure approach to managing passwords for work systems?",
+    options:["Use a strong master password and reuse it across systems for reliability","Use a firm-approved password manager with unique passwords per system, plus MFA","Write passwords in a locked notebook kept at your desk","Use passwords based on memorable personal information with symbols added"],
+    correct:1,
+    feedback:"A firm-approved password manager generating unique passwords per system, combined with multi-factor authentication, is the strongest approach. Reusing passwords means one breach compromises all accounts."
+  },
+  {
+    section:"Password & access security",
+    scenario:"Your MFA app is on your personal phone. You receive an unexpected push notification asking you to approve a login — but you're not currently logging in anywhere.",
+    question:"What should you do?",
+    options:["Approve it — the system sometimes sends duplicate notifications","Deny it, then immediately change your password and notify IT security","Ignore it — it will expire on its own","Approve it and then change your password later"],
+    correct:1,
+    feedback:"An unsolicited MFA push means someone has your password and is attempting to log in right now. Deny the push immediately, change your password, and report it to IT security — this is an active incident."
+  },
+  {
+    section:"Password & access security",
+    scenario:null,
+    question:"You're going on holiday and a colleague asks for your login so they can cover your tasks. What should you do?",
+    options:["Share credentials via an encrypted messaging app","Refuse — shared credentials violate policy and create an audit trail problem","Give only your password, not your username","Create a temporary password and tell IT afterward"],
+    correct:1,
+    feedback:"Shared credentials are a policy violation and create serious audit and accountability issues in a regulated firm. IT should grant your colleague appropriate access through proper access controls."
+  },
+  {
+    section:"Insider threats",
+    scenario:"You notice a colleague downloading large volumes of client data and trade history to a USB drive late in the evening. They say it's for a 'personal backup.'",
+    question:"What's the appropriate action?",
+    options:["Trust their explanation — they've been here longer than you","Ask them to stop but don't escalate if they comply","Report the behavior to your manager or IT security promptly","Wait to see if it becomes a pattern before acting"],
+    correct:2,
+    feedback:"Large, unusual data exports to removable media are a significant insider threat indicator. Report promptly — this is a compliance and regulatory obligation, not just a security preference."
+  },
+  {
+    section:"Insider threats",
+    scenario:null,
+    question:"Which behavior is most consistent with a malicious insider threat?",
+    options:["Accessing client files relevant to their own accounts","Printing documents needed for a client meeting","Accessing systems and data outside their role after receiving a resignation notice","Working late to meet a quarterly deadline"],
+    correct:2,
+    feedback:"Access to systems and data outside a person's role, particularly after a resignation or during a performance issue, is a well-documented insider threat pattern. Access controls and audit logs exist to detect this."
+  },
+  {
+    section:"Data handling & classification",
+    scenario:"You need to send a client's portfolio summary to an external advisor. The file contains AUM figures, position details, and personal account information.",
+    question:"What's the correct procedure?",
+    options:["Email it as a regular attachment — the client gave permission to share","Use a firm-approved secure file transfer method and confirm the recipient's identity","Zip the file with a simple password and send the password in the same email","Share via a personal file-sharing service for convenience"],
+    correct:1,
+    feedback:"Client portfolio data is highly sensitive and subject to regulatory requirements. It must be sent via firm-approved secure channels. Sending a password in the same email defeats encryption entirely."
+  },
+  {
+    section:"Data handling & classification",
+    scenario:null,
+    question:"You're working remotely at a coffee shop on a deal you're advising on. What's the most important security practice?",
+    options:["Sit with your back to the wall so no one can see your screen","Use the firm VPN, avoid public Wi-Fi without it, and use a privacy screen if available","Work only on non-sensitive documents in public spaces","Use your personal hotspot instead of the coffee shop Wi-Fi"],
+    correct:1,
+    feedback:"Using the firm VPN is mandatory for remote work. A privacy screen guards against shoulder-surfing. Multiple controls used together are always stronger than any single one."
+  },
+  {
+    section:"Data handling & classification",
+    scenario:null,
+    question:"A former employee emails asking for access to documents from a deal they worked on before leaving the firm. How should you respond?",
+    options:["Send the documents — they contributed to the deal","Check with your manager then send if they approve","Decline and direct them to your firm's legal or compliance team","Share only the non-confidential parts"],
+    correct:2,
+    feedback:"Access to firm documents by former employees is a legal and compliance matter. Former employees do not retain automatic rights to confidential deal materials. Direct all such requests to legal or compliance."
+  },
+  {
+    section:"Incident response",
+    scenario:"You click a link in an email before realising it looks suspicious. Your browser briefly shows an unfamiliar site, then redirects to your firm's intranet login page.",
+    question:"What should you do immediately?",
+    options:["Log in to the intranet page — it seems fine now","Close the browser and tell your manager later","Disconnect from the network, do not log in to anything, and contact IT security immediately","Run a virus scan and log in if it comes back clean"],
+    correct:2,
+    feedback:"The redirect to a fake intranet login page is a credential-harvesting attack. Do not log in. Disconnect from the network immediately to limit potential malware spread, then contact IT security."
+  },
+  {
+    section:"Incident response",
+    scenario:null,
+    question:"When is the right time to report a potential security incident?",
+    options:["Only when you're certain it's a real incident","After you've investigated it yourself to avoid false alarms","Immediately, even if you're not sure — report early and let security triage it","At the end of the business day so as not to disrupt the team"],
+    correct:2,
+    feedback:"Report early and report often. Security teams expect false alarms and would always rather investigate a non-incident than miss a real one. Delays in reporting can dramatically increase the impact of a breach."
+  },
+  {
+    section:"Incident response",
+    scenario:"You discover that a vendor's system you connect to has been breached and client data may have been exposed. The vendor asks you not to disclose it yet while they investigate.",
+    question:"What should you do?",
+    options:["Honor the vendor's request and wait for their guidance","Notify your firm's legal, compliance, and IT security teams immediately regardless of vendor request","Wait 24 hours then escalate if the vendor hasn't resolved it","Only notify your direct manager"],
+    correct:1,
+    feedback:"Regulatory obligations (GDPR, FCA, SEC etc.) impose strict notification timelines on regulated firms — vendor requests do not override these. Your firm must assess its own regulatory obligations immediately."
+  },
+  {
+    section:"Incident response",
+    scenario:null,
+    question:"Which correctly describes the 'principle of least privilege'?",
+    options:["Employees should only have access to the systems and data needed for their specific role","Senior employees should have full system access to cover for others","Access should be granted quickly and reviewed annually","Personal devices should have fewer privileges than firm devices"],
+    correct:0,
+    feedback:"Least privilege means each person's access is limited to exactly what their role requires. This limits the damage from a compromised account, an insider threat, or a mistake — it's a foundational control in regulated environments."
+  }
+];
+
+const SECTIONS = [
+  { name:"Phishing & email threats",           range:[0,2]  },
+  { name:"Social engineering",                  range:[3,5]  },
+  { name:"Password & access security",          range:[6,8]  },
+  { name:"Insider threats",                     range:[9,10] },
+  { name:"Data handling & classification",      range:[11,13]},
+  { name:"Incident response",                   range:[14,17]}
+];
+
+let current  = 0;
+let answers  = [];
+let answered = false;
+let employeeName = "";
+
+/* ── Name gate ── */
+const nameInput = document.getElementById('employee-name');
+const btnStart  = document.getElementById('btn-start');
+nameInput.addEventListener('input', () => {
+  btnStart.disabled = nameInput.value.trim().length < 2;
+});
+
+function startTraining() {
+  employeeName = nameInput.value.trim();
+  if (!employeeName) return;
+  document.getElementById('topbar-meta').textContent = employeeName;
+  document.getElementById('screen-intro').classList.remove('active');
+  document.getElementById('screen-quiz').classList.add('active');
+  current = 0; answers = [];
+  loadQuestion();
+}
+
+/* ── Question loader ── */
+function getSec(idx) { return SECTIONS.find(s => idx >= s.range[0] && idx <= s.range[1]); }
+
+function loadQuestion() {
+  const q   = QUESTIONS[current];
+  const sec = getSec(current);
+  answered  = false;
+
+  document.getElementById('q-section-name').textContent = sec.name;
+  document.getElementById('q-counter').textContent = `${current+1} / ${QUESTIONS.length}`;
+  document.getElementById('prog-text').textContent  = `Question ${current+1} of ${QUESTIONS.length}`;
+
+  const pct = Math.round((current / QUESTIONS.length) * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('prog-pct').textContent = pct + '%';
+
+  const scEl = document.getElementById('q-scenario');
+  if (q.scenario) {
+    document.getElementById('q-scenario-text').textContent = q.scenario;
+    scEl.style.display = 'block';
+  } else {
+    scEl.style.display = 'none';
+  }
+
+  document.getElementById('q-text').textContent = q.question;
+  document.getElementById('q-feedback').style.display = 'none';
+  document.getElementById('btn-next').disabled = true;
+  document.getElementById('btn-next').textContent = current < QUESTIONS.length - 1 ? 'Next →' : 'See results →';
+
+  const labels = ['A','B','C','D'];
+  const optEl  = document.getElementById('q-options');
+  optEl.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.innerHTML = `<span class="opt-label">${labels[i]}</span><span>${opt}</span>`;
+    btn.onclick = () => selectAnswer(i);
+    optEl.appendChild(btn);
+  });
+}
+
+function selectAnswer(idx) {
+  if (answered) return;
+  answered = true;
+  answers[current] = idx;
+
+  const q    = QUESTIONS[current];
+  const ok   = idx === q.correct;
+  const btns = document.querySelectorAll('.opt-btn');
+  btns.forEach((b, i) => {
+    b.disabled = true;
+    if (i === idx  && ok)  b.classList.add('correct');
+    if (i === idx  && !ok) b.classList.add('wrong');
+    if (i === q.correct && !ok) b.classList.add('reveal');
+  });
+
+  const fb = document.getElementById('q-feedback');
+  fb.className = 'feedback ' + (ok ? 'correct' : 'wrong');
+  fb.textContent = (ok ? '✓  ' : '✗  ') + q.feedback;
+  fb.style.display = 'block';
+
+  document.getElementById('btn-next').disabled = false;
+}
+
+function nextQuestion() {
+  if (!answered) return;
+  current++;
+  if (current >= QUESTIONS.length) showResults();
+  else loadQuestion();
+}
+
+/* ── Results ── */
+function showResults() {
+  document.getElementById('screen-quiz').classList.remove('active');
+  document.getElementById('screen-results').classList.add('active');
+
+  const total   = QUESTIONS.length;
+  const correct = answers.filter((a, i) => a === QUESTIONS[i].correct).length;
+  const pct     = Math.round((correct / total) * 100);
+  const passed  = pct >= 90;
+  const date    = new Date().toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
+
+  const secScores = SECTIONS.map(s => {
+    const qs = QUESTIONS.slice(s.range[0], s.range[1]+1);
+    const as = answers.slice(s.range[0], s.range[1]+1);
+    const c  = as.filter((a, i) => a === qs[i].correct).length;
+    return { name: s.name, correct: c, total: qs.length };
+  });
+
+  let bdHtml = '';
+  secScores.forEach(s => {
+    const sp  = Math.round((s.correct / s.total) * 100);
+    const cls = sp === 100 ? 'full' : sp >= 50 ? 'partial' : 'none';
+    const barColor = sp === 100 ? 'var(--green)' : sp >= 50 ? 'var(--amber)' : 'var(--red)';
+    bdHtml += `<div class="bd-row">
+      <span class="bd-name">${s.name}</span>
+      <div class="bd-bar"><div class="bd-bar-fill" style="width:${sp}%;background:${barColor}"></div></div>
+      <span class="bd-score ${cls}">${s.correct}/${s.total}</span>
+    </div>`;
+  });
+
+  const passBanner = passed
+    ? `<div class="cert-banner"><strong>Certificate of completion</strong><span>Cybersecurity Awareness Training — ${date}</span></div>`
+    : `<div class="retry-banner"><strong>Score below 90% — training not passed</strong><span>Review the breakdown below and retake the training</span></div>`;
+
+  document.getElementById('results-content').innerHTML = `
+    <div class="results-top">
+      <div class="score-circle${passed ? '' : ' fail'}">
+        <div class="score-num" style="color:${passed ? 'var(--green)' : 'var(--red)'}">${pct}%</div>
+        <div class="score-pct-lbl">${correct}/${total} correct</div>
+      </div>
+      <div class="result-name">${employeeName}</div>
+      <div class="result-headline ${passed ? 'pass' : 'fail'}">${passed ? 'Training passed' : 'Training not passed'}</div>
+      <div class="result-sub">${passed ? 'Your completion has been logged and emailed.' : 'You need 90% or higher to pass.'}</div>
+    </div>
+
+    ${passBanner}
+
+    <div class="breakdown-title">Score by section</div>
+    <div class="breakdown">${bdHtml}</div>
+
+    <div class="email-status sending" id="email-status">Sending results…</div>
+
+    <div class="results-actions">
+      ${passed ? '' : '<button class="btn-primary" onclick="retake()">Retake training →</button>'}
+      <button class="btn-ghost" onclick="retake()">Start over</button>
+    </div>
+  `;
+
+  sendResults({ name: employeeName, pct, correct, total, passed, date, secScores });
+}
+
+/* ── EmailJS result sender ── */
+function sendResults({ name, pct, correct, total, passed, date, secScores }) {
+  const statusEl = document.getElementById('email-status');
+
+  // Build section breakdown text
+  const breakdown = secScores.map(s =>
+    `${s.name}: ${s.correct}/${s.total} (${Math.round(s.correct/s.total*100)}%)`
+  ).join('\n');
+
+  const templateParams = {
+    employee_name:   name,
+    score_pct:       pct + '%',
+    score_fraction:  `${correct} / ${total}`,
+    result:          passed ? 'PASSED' : 'FAILED',
+    completion_date: date,
+    breakdown:       breakdown
+  };
+
+  if (EMAILJS_PUBLIC_KEY === "YOUR_PUBLIC_KEY") {
+    // Not yet configured — show placeholder status
+    statusEl.className = 'email-status';
+    statusEl.textContent = 'Email notifications not yet configured — see setup guide.';
+    return;
+  }
+
+  emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+  emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+    .then(() => {
+      statusEl.className = 'email-status sent';
+      statusEl.textContent = '✓ Results emailed to CISO mailbox.';
+    })
+    .catch(err => {
+      console.error('EmailJS error:', err);
+      statusEl.className = 'email-status error';
+      statusEl.textContent = 'Could not send email — please notify IT manually.';
+    });
+}
+
+function retake() {
+  current = 0; answers = []; answered = false;
+  document.getElementById('screen-results').classList.remove('active');
+  document.getElementById('screen-intro').classList.add('active');
+  document.getElementById('employee-name').value = '';
+  document.getElementById('btn-start').disabled = true;
+  document.getElementById('topbar-meta').textContent = 'Annual compliance — 2025';
+}
+</script>
+</body>
+</html>

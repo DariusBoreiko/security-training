@@ -363,33 +363,33 @@ const EMAILJS_TEMPLATE_ID = "template_vrw1qvd";  // from EmailJS → Email Templ
 const QUESTIONS = [
   {
     section:"Phishing & email threats",
-    scenario:"You receive an email from 'IT-Security@meridian-finance.support' saying your VPN password expires in 2 hours. It urges you to click a link immediately to reset it or lose access.",
+    scenario:"You receive an email from 'IT-Security@capitalmanagement.fr' saying your password expires in 2 hours. It urges you to click a link immediately to reset it or lose access.",
     question:"What should you do first?",
     options:["Click the link to reset your password before it expires","Forward the email to a colleague to get their opinion","Report the email to IT security without clicking any links","Reply to the sender asking if it's legitimate"],
     correct:2,
-    feedback:"Urgency is a hallmark of phishing. The domain 'meridian-finance.support' is not your firm's domain. Report suspicious emails directly to IT security — never click links or reply to senders you cannot verify."
+    feedback:"Urgency is a hallmark of phishing. The domain '@capitalmanagement.fr' is not your firm's domain. Report suspicious emails directly to IT security — never click links or reply to senders you cannot verify."
   },
   {
     section:"Phishing & email threats",
     scenario:null,
     question:"Which is the strongest indicator that an email link may be malicious?",
-    options:["The email was sent outside of business hours","The visible link text says 'portal.firm.com' but the actual URL goes to a different domain","The email has your full name in the greeting","The email has no attachments"],
+    options:["The email was sent outside of business hours","The visible link text says 'levittcapital.fr' but the actual URL goes to a different domain","The email has your full name in the greeting","The email has no attachments"],
     correct:1,
     feedback:"Mismatched URLs — where visible text shows one address but the hyperlink points elsewhere — are a classic phishing technique. Always hover over links to check the actual destination before clicking."
   },
   {
     section:"Phishing & email threats",
-    scenario:"A PDF arrives from a client's known email address. The email says 'Please review the attached deal terms.' The PDF asks you to enable macros to view it.",
+    scenario:"An email with Excel file link arrives from a client's known email address. The email says 'Please review the Excel file.' To open the Excel file, it asks you to click on a link to view it",
     question:"How should you handle this?",
-    options:["Enable macros since it came from a trusted client email","Contact the client by phone to verify before opening the attachment","Open the PDF and enable macros — that's standard for deal documents","Forward to your manager for them to open instead"],
+    options:["Click on the link since it came from a trusted client email","Contact the client by phone to verify before opening the attachment","Respond to client's email asking for Excel attachment, not the link.","Forward to your colleague for them to open instead"],
     correct:1,
-    feedback:"Client email accounts can be compromised. Legitimate deal documents never require enabling macros. Call the client on a known number to verify. Forwarding to your manager simply moves the risk."
+    feedback:"Client email accounts can be compromised. Legitimate documents can be opened as regular email attachments. Call the client on a known number to verify. Forwarding to your colleague simply moves the risk."
   },
   {
     section:"Social engineering",
-    scenario:"Someone calls saying they're from your prime broker's tech team. They know your name and firm name, and say there's a critical system issue. They ask for your login credentials to troubleshoot.",
+    scenario:"Someone calls saying they're from Interactive Brokers tech team. They know your name and firm name, and say there's a critical system issue. They ask for your login credentials to troubleshoot.",
     question:"What's the correct response?",
-    options:["Provide the credentials since they know firm-specific details","Ask for their employee ID, then provide the credentials","Refuse, hang up, and call the prime broker's official support line to verify","Give a temporary password only"],
+    options:["Provide the credentials since they know firm-specific details","Ask for their employee ID, then provide the credentials","Refuse, hang up, and call the Interactive Brokers' official support line to verify","Give a temporary password only"],
     correct:2,
     feedback:"Knowing your name and firm is not proof of identity — this information is often publicly available. No legitimate vendor or IT team will ever ask for credentials over the phone. Hang up and call back on the official number."
   },
